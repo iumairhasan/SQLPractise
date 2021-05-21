@@ -43,3 +43,16 @@ group by sod.ProductID, name
 having count(sod.ProductID) > '5'
 order by 'No.of Times sold' desc, sod.ProductID asc
 
+--Question 5
+select temp.CustomerID, temp.AccountNumber
+from (select CustomerID, AccountNumber, cast(max(OrderDate) as date) as 'OrderDate'
+		from sales.SalesOrderHeader
+		group by CustomerID, AccountNumber
+		having cast(max(OrderDate) as date) <= '2008-01-01') temp
+order by temp.CustomerID asc
+
+select  oh.CustomerID as"Customer ID", oh.AccountNumber as "Account Number" 
+from sales.SalesOrderHeader oh
+group by CustomerID, AccountNumber
+having max(oh.OrderDate) <= '2008-01-01' --not placed an order after january 1st 2008, so including orders placed on jan 1st 2008
+order by  oh.CustomerID
