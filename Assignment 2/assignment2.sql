@@ -17,6 +17,13 @@ FROM Production.Product
 WHERE ListPrice > 0
 ORDER BY ListPrice DESC;
 
+--Question 1
 select [CustomerID], [SalesOrderID], CAST([OrderDate] as DATE) as OrderDate, ROUND([TotalDue], 2) as 'Total Due'
 from Sales.SalesOrderHeader soh
 where OrderDate>'2008-05-01' and TotalDue>50000
+
+--QUestion 2
+select CustomerID, AccountNumber, cast(max(OrderDate) as date) as 'Order Date', count(salesorderid) as 'total orders'
+from Sales.SalesOrderHeader
+group by CustomerID, AccountNumber
+order by CustomerID
