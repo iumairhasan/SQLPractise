@@ -56,3 +56,12 @@ from sales.SalesOrderHeader oh
 group by CustomerID, AccountNumber
 having max(oh.OrderDate) <= '2008-01-01' --not placed an order after january 1st 2008, so including orders placed on jan 1st 2008
 order by  oh.CustomerID
+
+--Question 6
+select c.CustomerID, p.FirstName, p.LastName, ea.EmailAddress 
+from sales.Customer c
+	join person.person p
+	on c.PersonID = p.BusinessEntityID
+	join person.EmailAddress ea
+	on p.BusinessEntityID = ea.BusinessEntityID
+
