@@ -27,3 +27,9 @@ select CustomerID, AccountNumber, cast(max(OrderDate) as date) as 'Order Date', 
 from Sales.SalesOrderHeader
 group by CustomerID, AccountNumber
 order by CustomerID
+
+--Question 3
+select ProductID, Name, ListPrice
+from Production.Product p
+where p.ListPrice> (select ListPrice from Production.Product where ProductID = 912)
+order by ListPrice DESC
