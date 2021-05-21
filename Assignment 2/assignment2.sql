@@ -33,3 +33,13 @@ select ProductID, Name, ListPrice
 from Production.Product p
 where p.ListPrice> (select ListPrice from Production.Product where ProductID = 912)
 order by ListPrice DESC
+
+--Question 4
+select sod.ProductID, name, cast(count(sod.ProductID) as int) as 'No.of Times sold'
+from sales.SalesOrderDetail sod
+	join Production.Product p
+	on sod.ProductID = p.ProductID
+group by sod.ProductID, name
+having count(sod.ProductID) > '5'
+order by 'No.of Times sold' desc, sod.ProductID asc
+
