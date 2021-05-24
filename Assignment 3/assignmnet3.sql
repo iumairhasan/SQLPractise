@@ -12,4 +12,40 @@ FROM Sales.Customer c
 LEFT OUTER JOIN Sales.SalesOrderHeader o
  ON c.CustomerID = o.CustomerID
 WHERE DATEPART(year, OrderDate) = 2007
-GROUP BY c.TerritoryID, c.CustomerID;
+GROUP BY c.TerritoryID, c.CustomerID;SELECT c.CustomerID, c.TerritoryID,
+ COUNT(o.SalesOrderid) [Total Orders], 
+ DENSE_RANK() over (Partition by c.TerritoryID order by COUNT(o.SalesOrderid) desc) as [Rank]
+FROM Sales.Customer c
+LEFT OUTER JOIN Sales.SalesOrderHeader o
+ ON c.CustomerID = o.CustomerID
+WHERE DATEPART(year, OrderDate) = 2007
+GROUP BY c.TerritoryID, c.CustomerID;
+
+
+--3.3
+select top 1 with ties sp.BusinessEntityID, sp.Bonus
+from Sales.SalesPerson sp
+join Sales.SalesTerritory st
+on sp.TerritoryID = st.TerritoryID
+join HumanResources.Employee e
+on sp.BusinessEntityID = e.BusinessEntityID
+where e.Gender = 'F' and st.[Group] = 'North America'
+order by sp.bonus desc
+
+--3.4
+with temp as
+(select soh.SalesPersonID, 
+dense_rank() over(partition by DATEPART(month, soh.orderdate) order by sum(soh.totaldue)desc) as 'rank',
+DATEPART(month, soh.orderdate) as 'month ',
+sum(soh.totaldue) as' Sales'
+from sales.SalesOrderHeader soh
+where  DATEPART(Year, soh.orderdate) = 2007 and soh.SalesPersonID is not null
+group by DATEPART(month, soh.orderdate), soh.SalesPersonID)
+select temp.[month ], temp.SalesPersonID, temp.[ Sales] , sp.Bonus
+from temp
+join Sales.SalesPerson sp
+on sp.BusinessEntityID = temp.SalesPersonID
+where temp.rank = 1
+
+--3.5
+
