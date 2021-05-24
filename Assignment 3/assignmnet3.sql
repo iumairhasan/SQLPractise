@@ -61,3 +61,20 @@ where rank =1
 order by month;
 
 --3.5
+select soh.CustomerID, soh.AccountNumber
+from sales.SalesOrderHeader soh
+join Sales.SalesOrderDetail sod
+on soh.SalesOrderID = sod.SalesOrderID
+join Production.Product p
+on sod.ProductID = p.ProductID
+where p.Color = 'Red' and soh.OrderDate > '2008-05-01'
+intersect
+select soh.CustomerID, soh.AccountNumber
+from sales.SalesOrderHeader soh
+join Sales.SalesOrderDetail sod
+on soh.SalesOrderID = sod.SalesOrderID
+join Production.Product p
+on sod.ProductID = p.ProductID
+where p.Color = 'Yellow' and soh.OrderDate > '2008-05-01'
+order by soh.CustomerID
+
