@@ -46,6 +46,18 @@ from temp
 join Sales.SalesPerson sp
 on sp.BusinessEntityID = temp.SalesPersonID
 where temp.rank = 1
+--order by  DATEPART(month, soh.orderdate)
+
+select month, temp.SalesPersonID, round(TotalSale, 2) [Total Sales], Bonus from
+(
+select month(OrderDate) Month, SalesPersonID, sum(TotalDue) TotalSale,
+rank() over (partition by month(OrderDate) order by sum(TotalDue) desc) as rank
+from Sales.SalesOrderHeader
+where SalesPersonID is not null and year(OrderDate) = 2007
+group by month(OrderDate), SalesPersonID) temp
+join Sales.SalesPerson s
+on temp.SalesPersonID = s.BusinessEntityID
+where rank =1
+order by month;
 
 --3.5
-
