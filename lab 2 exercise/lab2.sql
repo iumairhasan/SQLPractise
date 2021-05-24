@@ -20,4 +20,35 @@ from Sales.SalesOrderHeader soh
 where soh.OrderDate between '2007-06-01' and '2007-06-30'
 
 --6		
-select format(dateadd(day, 30, getdate()), 'MM/dd/yyyy') as 'date after 30 days'--7
+select format(dateadd(day, 30, getdate()), 'MM/dd/yyyy') as 'date after 30 days'--7select count (*) as 'Total Orders',	sum(soh.TotalDue) as 'Sum',	avg(soh.TotalDue) as'Average',	min(soh.TotalDue) as 'Minimum',	max(soh.TotalDue) as 'Maximum'	from sales.SalesOrderHeader sohwhere datepart(Month, soh.OrderDate) = 5 and datepart(year, soh.OrderDate) = 2008SELECT COUNT(*) [Total Orders],
+ SUM(TotalDue) [Overall Total],
+ AVG(TotalDue) [Order Ave.],
+ MIN(TotalDue) [Smallest Total],
+ MAX(TotalDue) [Largest Total]
+FROM Sales.SalesOrderHeader
+WHERE (DATEPART(MONTH, OrderDate) = 5) AND
+ (DATEPART(YEAR, OrderDate) = 2008);
+
+ --8
+select soh.CustomerID, count(soh.CustomerID) as 'No.of Orders',
+	sum(soh.TotalDue) as 'Sum of due'
+from Sales.SalesOrderHeader soh
+where DATEPART(Year, soh.OrderDate) = 2007
+group by soh.CustomerID
+having count(soh.CustomerID) > 1
+order by sum(soh.TotalDue) desc
+
+--9
+select distinct soh.SalesPersonID
+from Sales.SalesOrderDetail sod 
+join Sales.SalesOrderHeader soh
+on soh.SalesOrderID = sod.SalesOrderID
+where sod.ProductID = 777
+order by soh.SalesPersonID
+
+SELECT DISTINCT SalesPersonID
+FROM Sales.SalesOrderHeader oh
+INNER JOIN Sales.SalesOrderDetail od
+ON oh.SalesOrderID = od.SalesOrderID
+WHERE ProductID = 777
+ORDER BY SalesPersonID;
