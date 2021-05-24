@@ -45,10 +45,13 @@ join Sales.SalesOrderHeader soh
 on soh.SalesOrderID = sod.SalesOrderID
 where sod.ProductID = 777
 order by soh.SalesPersonID
-
-SELECT DISTINCT SalesPersonID
-FROM Sales.SalesOrderHeader oh
-INNER JOIN Sales.SalesOrderDetail od
-ON oh.SalesOrderID = od.SalesOrderID
-WHERE ProductID = 777
-ORDER BY SalesPersonID;
+--10select p.ProductID, p.Name, p.ListPrice, p.Size
+from Production.Product p
+join Production.ProductSubcategory psc
+on p.ProductSubcategoryID = psc.ProductSubcategoryID
+where psc.ProductCategoryID = 1 and psc.Name = 'Mountain Bikes';--11select soh.SalesOrderID, crc.Name
+from Sales.SalesOrderHeader soh
+join Sales.CurrencyRate c
+on soh.CurrencyRateID = c.CurrencyRateID
+join Sales.Currency crc
+on c.ToCurrencyCode = crc.CurrencyCode;
