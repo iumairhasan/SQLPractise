@@ -12,7 +12,9 @@ FROM Sales.Customer c
 LEFT OUTER JOIN Sales.SalesOrderHeader o
  ON c.CustomerID = o.CustomerID
 WHERE DATEPART(year, OrderDate) = 2007
-GROUP BY c.TerritoryID, c.CustomerID;SELECT c.CustomerID, c.TerritoryID,
+GROUP BY c.TerritoryID, c.CustomerID;
+
+SELECT c.CustomerID, c.TerritoryID,
  COUNT(o.SalesOrderid) [Total Orders], 
  DENSE_RANK() over (Partition by c.TerritoryID order by COUNT(o.SalesOrderid) desc) as [Rank]
 FROM Sales.Customer c
