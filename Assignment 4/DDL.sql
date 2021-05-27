@@ -1,9 +1,11 @@
+DROP DATABASE IF EXISTS SQLPractise;
 Create database SQLPractise;
 
 Go
 
 Use SQLPractise;
 
+DROP TABLE IF EXISTS TargetCustomers;
 create table TargetCustomers
 (
 	TargetID int not null primary key,
@@ -15,12 +17,14 @@ create table TargetCustomers
 	Zipcode int
 );
 
+DROP TABLE IF EXISTS MailingLists;
 create table MailingLists
 (
 	MailingListID int not null primary key,
 	MailingList varchar(50)  not null
 )
 
+DROP TABLE IF EXISTS TargetMailingLists;
 create table TargetMailingLists
 (
 	TargetID int not null
